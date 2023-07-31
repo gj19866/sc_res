@@ -49,19 +49,19 @@
       type = DirichletBC
       variable = T
       value = 300
-      boundary = 'left'
+      boundary = 'right'
     []
     [t_right]
       type = FunctionDirichletBC
       variable = T
-      function = '300+5*t'
-      boundary = 'right'
+      function = '500'
+      boundary = 'left'
     []
   []
   
   [Executioner]
     type = Transient
-    end_time = 5
+    end_time = 100
     dt = 1
   []
   
