@@ -1,3 +1,4 @@
+
 #
 # Single block thermal input with time derivative term
 # https://mooseframework.inl.gov/modules/heat_conduction/tutorials/introduction/therm_step03.html
@@ -7,16 +8,16 @@
     [generated]
       type = GeneratedMeshGenerator
       dim = 2
-      nx = 10
+      nx = 21
       ny = 10
-      xmax = 2
+      xmax = 1
       ymax = 1
     []
   []
   
   [Variables]
     [T]
-      initial_condition = 300.0
+      initial_condition = 0.0
     []
   []
   
@@ -48,39 +49,25 @@
     [t_left]
       type = DirichletBC
       variable = T
-      value = 300
-      boundary = 'right'
+      value = 100
+      boundary = 'left'
     []
     [t_right]
-      type = FunctionDirichletBC
+      # type = NeumannBC
+      type = DirichletBC
+      value = 100
       variable = T
-      function = '500'
-      boundary = 'left'
+      boundary = 'right'
     []
   []
   
   [Executioner]
     type = Transient
-    end_time = 100
-    dt = 1
+    end_time = 40
+    dt = 0.1
   []
-  
-  [VectorPostprocessors]
-    [t_sampler]
-      type = LineValueSampler
-      variable = T
-      start_point = '0 0.5 0'
-      end_point = '2 0.5 0'
-      num_points = 20
-      sort_by = x
-    []
-  []
+
   
   [Outputs]
     exodus = true
-    [csv]
-      type = CSV
-      file_base = therm_step03_out
-      execute_on = final
-    []
   []
