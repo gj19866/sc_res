@@ -16,12 +16,12 @@
  *  reaction rate coefficient material property, $v$ is a scalar variable (nonlinear or coupled
  * auxvariable), and whose Jacobian contribution is calculated using automatic differentiation.
  */
-class eq66Im : public ADKernel
+class eq67 : public ADKernel
 {
 public:
   static InputParameters validParams();
 
-  eq66Im(const InputParameters & parameters);
+  eq67(const InputParameters & parameters);
 
 protected:
   virtual ADReal computeQpResidual() override;
@@ -40,14 +40,5 @@ private:
   const ADVariableValue & _Phi;
   const ADVariableGradient & _grad_Phi;
 
-  const ADVariableValue & _Psi_Im_dot;
-
-  
-
-
-
-  /// Reaction rate material property
-  const ADMaterialProperty<Real> & _ucon;
-  const ADMaterialProperty<Real> & _gamma;
   
 };

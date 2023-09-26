@@ -33,7 +33,7 @@ eq66Im::eq66Im(const InputParameters & parameters)
   : ADKernel(parameters),
     _Psi_Im(adCoupledValue("Psi_Im")),
     _grad_Psi_Im(adCoupledGradient("Psi_Im")),
-    _Psi_dot(adCoupledDot("Psi_Im")),
+    _Psi_Im_dot(adCoupledDot("Psi_Im")),
     _Phi(adCoupledValue("Phi")),
     _grad_Phi(adCoupledGradient("Phi")),
     _ucon(getADMaterialProperty<Real>("ucon")),
@@ -45,7 +45,7 @@ ADReal
 eq66Im::computeQpResidual()
 {
 
-//   double part1 = (_test[_i][_qp] * (-_ucon[_qp] * sqrt(1+ _gamma[_qp] * _gamma[_qp] * (_u[_qp] * _u[_qp] + _Psi_Im[_qp] * _Psi_Im[_qp])) ) * (_Psi_dot[_qp] + _Phi[_qp] * _u[_qp]));
+//   double part1 = (_test[_i][_qp] * (-_ucon[_qp] * sqrt(1+ _gamma[_qp] * _gamma[_qp] * (_u[_qp] * _u[_qp] + _Psi_Im[_qp] * _Psi_Im[_qp])) ) * (_Psi_Im_dot[_qp] + _Phi[_qp] * _u[_qp]));
 
 //   double part2 = (_grad_test[_i][_qp] * (- _grad_Psi_Im[_qp]));
 
@@ -53,6 +53,6 @@ eq66Im::computeQpResidual()
 
 //   double part4 = (_test[_i][_qp] * (1 - _u[_qp] * _u[_qp] - _Psi_Im[_qp] * _Psi_Im[_qp]) * _Psi_Im[_qp]);
 
-  return  (_test[_i][_qp] * (-_ucon[_qp] * sqrt(1+ _gamma[_qp] * _gamma[_qp] * (_u[_qp] * _u[_qp] + _Psi_Im[_qp] * _Psi_Im[_qp])) ) * (_Psi_dot[_qp] + _Phi[_qp] * _u[_qp])) + (_grad_test[_i][_qp] * (- _grad_Psi_Im[_qp])) + (_grad_test[_i][_qp] * (- _gamma[_qp] * _gamma[_qp] *  _u[_qp] * _grad_Phi[_qp])) +  (_test[_i][_qp] * (1 - _u[_qp] * _u[_qp] - _Psi_Im[_qp] * _Psi_Im[_qp]) * _Psi_Im[_qp]);
+  return  (_test[_i][_qp] * (-_ucon[_qp] * sqrt(1+ _gamma[_qp] * _gamma[_qp] * (_u[_qp] * _u[_qp] + _Psi_Im[_qp] * _Psi_Im[_qp])) ) * (_Psi_Im_dot[_qp] + _Phi[_qp] * _u[_qp])) + (_grad_test[_i][_qp] * (- _grad_Psi_Im[_qp])) + (_grad_test[_i][_qp] * (- _gamma[_qp] * _gamma[_qp] *  _u[_qp] * _grad_Phi[_qp])) +  (_test[_i][_qp] * (1 - _u[_qp] * _u[_qp] - _Psi_Im[_qp] * _Psi_Im[_qp]) * _Psi_Im[_qp]);
 
 }
