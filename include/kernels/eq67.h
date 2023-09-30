@@ -37,8 +37,8 @@ private:
   const ADVariableValue & _Psi_Im;
   const ADVariableGradient & _grad_Psi_Im;
 
-  const ADVariableValue & _Phi;
-  const ADVariableGradient & _grad_Phi;
+  const ADVariableValue & _Psi_Re;
+  const ADVariableGradient & _grad_Psi_Re;
 
   
 };

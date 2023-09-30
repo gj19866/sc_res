@@ -17,10 +17,9 @@ eq66Re::validParams()
 {
   InputParameters params = ADKernel::validParams();
   params.addClassDescription(
-      "Kernel representing real component of eq66 of bible. Variable is Psi_Re.");
-  params.addCoupledVar("Psi_Im",
-                       "Imaginary component of Psi");
-  params.addCoupledVar("Phi",
+      "Kernel representing real component of eq66 of bible. Variable is Psi_Im.");
+  params.addRequiredCoupledVar("Psi_Re","Real component of Psi");
+  params.addRequiredCoupledVar("Phi",
                        "Phi");
   params.addParam<MaterialPropertyName>(
       "ucon", "ucon", "u from eq66");
@@ -31,11 +30,11 @@ eq66Re::validParams()
 
 eq66Re::eq66Re(const InputParameters & parameters)
   : ADKernel(parameters),
-    _Psi_Im(adCoupledValue("Psi_Im")),
-    _grad_Psi_Im(adCoupledGradient("Psi_Im")),
+    _Psi_Re(adCoupledValue("Psi_Re")),
+    _grad_Psi_Re(adCoupledGradient("Psi_Re")),
+    _Psi_Re_dot(adCoupledDot("Psi_Re")), 
     _Phi(adCoupledValue("Phi")),
     _grad_Phi(adCoupledGradient("Phi")),
-    _ad_u_dot(adCoupledDot("u")),  
     _ucon(getADMaterialProperty<Real>("ucon")),
     _gamma(getADMaterialProperty<Real>("gamma"))
 {
@@ -53,6 +52,8 @@ eq66Re::computeQpResidual()
 
   // double part4 = (_test[_i][_qp] * (1 - _u[_qp] * _u[_qp] - _Psi_Im[_qp] * _Psi_Im[_qp]) * _u[_qp]);
 
-  return  ((_test[_i][_qp] * (-_ucon[_qp] * sqrt(1+ _gamma[_qp] * _gamma[_qp] * (_u[_qp] * _u[_qp] + _Psi_Im[_qp] * _Psi_Im[_qp])) ) * (_ad_u_dot[_qp] - _Phi[_qp] * _Psi_Im[_qp]))) + (_grad_test[_i][_qp] * (- _grad_u[_qp])) + (_grad_test[_i][_qp] * (_gamma[_qp] * _gamma[_qp] *  _Psi_Im[_qp] * _grad_Phi[_qp])) + (_test[_i][_qp] * (1 - _u[_qp] * _u[_qp] - _Psi_Im[_qp] * _Psi_Im[_qp]) * _u[_qp]);
+  // Eqs changes to make Psi_Im the variable solved for. Please check!
+
+  return  ((_test[_i][_qp] * (-_ucon[_qp] * sqrt(1+ _gamma[_qp] * _gamma[_qp] * (_Psi_Re[_qp] * _Psi_Re[_qp] + _u[_qp] * _u[_qp])) ) * (_Psi_Re_dot[_qp] - _Phi[_qp] * _u[_qp]))) + (_grad_test[_i][_qp] * (- _grad_Psi_Re[_qp])) + (_grad_test[_i][_qp] * (_gamma[_qp] * _gamma[_qp] *  _u[_qp] * _grad_Phi[_qp])) + (_test[_i][_qp] * (1 - _Psi_Re[_qp] * _Psi_Re[_qp] - _u[_qp] * _u[_qp]) * _Psi_Re[_qp]);
 
 }

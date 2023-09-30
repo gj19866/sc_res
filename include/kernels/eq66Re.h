@@ -1,11 +1,3 @@
-//* This file is part of the MOOSE framework
-//* https://www.mooseframework.org
-//*
-//* All rights reserved, see COPYRIGHT for full restrictions
-//* https://github.com/idaholab/moose/blob/master/COPYRIGHT
-//*
-//* Licensed under LGPL 2.1, please see LICENSE for details
-//* https://www.gnu.org/licenses/lgpl-2.1.html
 
 #pragma once
 
@@ -34,13 +26,13 @@ private:
    * phase field, v = lambda where lambda is the Lagrange
    * multiplier)
    */
-  const ADVariableValue & _Psi_Im;
-  const ADVariableGradient & _grad_Psi_Im;
+  const ADVariableValue & _Psi_Re;
+  const ADVariableGradient & _grad_Psi_Re;
+  const ADVariableValue & _Psi_Re_dot;
 
   const ADVariableValue & _Phi;
   const ADVariableGradient & _grad_Phi;
 
-  const ADVariableValue & _ad_u_dot;
 
   
 

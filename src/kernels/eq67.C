@@ -17,11 +17,11 @@ eq67::validParams()
 {
   InputParameters params = ADKernel::validParams();
   params.addClassDescription(
-      "Kernel representing  eq67 of bible. Variable is Psi_Re.");
+      "Kernel representing  eq67 of bible. Variable is Phi.");
   params.addCoupledVar("Psi_Im",
                        "Imaginary component of Psi");
-  params.addCoupledVar("Phi",
-                       "Phi");
+  params.addCoupledVar("Psi_Re",
+                       "Psi_Re");
   return params;
 }
 
@@ -29,8 +29,8 @@ eq67::eq67(const InputParameters & parameters)
   : ADKernel(parameters),
     _Psi_Im(adCoupledValue("Psi_Im")),
     _grad_Psi_Im(adCoupledGradient("Psi_Im")),
-    _Phi(adCoupledValue("Phi")),
-    _grad_Phi(adCoupledGradient("Phi"))
+    _Psi_Re(adCoupledValue("Psi_Re")),
+    _grad_Psi_Re(adCoupledGradient("Psi_Re"))
 {
 }
 
@@ -45,7 +45,7 @@ eq67::computeQpResidual()
     // double part3 = (_grad_test[_i][_qp] * ( - _Psi_Im[_qp] * _grad_u[_qp]))
 
 
-  return   ((_grad_test[_i][_qp] * (-_grad_Phi[_qp])) + (_grad_test[_i][_qp] * (_u[_qp] * _grad_Psi_Im[_qp]))  +  (_grad_test[_i][_qp] * ( - _Psi_Im[_qp] * _grad_u[_qp])));
+  return   ((_grad_test[_i][_qp] * (-_grad_u[_qp])) + (_grad_test[_i][_qp] * (_Psi_Re[_qp] * _grad_Psi_Im[_qp]))  +  (_grad_test[_i][_qp] * ( - _Psi_Im[_qp] * _grad_Psi_Re[_qp])));
   
 
 }
