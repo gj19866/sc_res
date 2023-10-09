@@ -1,6 +1,6 @@
-**Project Bible** by *Lloyd Stein* to document intial workings, ideas, and finding. 
+**Project Bible** by *Lloyd Stein* to document initial workings, ideas, and finding. 
 
-***Fundemental Eqs***
+***Fundamental Eqs***
 
 The bible has the 3 equations, corresponding to eqs.66-68:
 
@@ -13,9 +13,9 @@ The bible has the 3 equations, corresponding to eqs.66-68:
 
 ***Considering Complex $\psi$***
 
-$\psi$ is complex, and thus for the solving of the problem using FE, it must be seperated into real and imaginary parts, so that $\psi = \psi_R + i\psi_I$.  
+$\psi$ is complex, and thus for the solving of the problem using FE, it must be separated into real and imaginary parts, so that $\psi = \psi_R + i\psi_I$.  
 
-By considering real and imaginary parts seperately, you then arrive at this set of equations for variables $\psi_R$, $\psi_I$, $\Phi$, and $\underline{j}$:
+By considering real and imaginary parts separately, you then arrive at this set of equations for variables $\psi_R$, $\psi_I$, $\Phi$, and $\underline{j}$:
 
 2.1) $$0=-u \sqrt{1+\gamma^2\left(\psi_R^2+\psi_I^2\right)}\left(\frac{\partial}{\partial t} \psi_R-\varphi \psi_I\right)+\nabla^2 \psi_R-\gamma^2 \psi_I \nabla^2 \varphi+\left(1-\psi_R^2-\psi_I^2\right) \psi_R$$
 
@@ -27,20 +27,22 @@ By considering real and imaginary parts seperately, you then arrive at this set 
 2.4) $$0=\underline{j}+\nabla \varphi-\psi_R \nabla \psi_I+\psi_I \nabla \psi_R$$
 
 
-***Geneating A Weak Form***
+***Generating A Weak Form***
 
 To do this I have written one kernel for each equation to solve them. 
 
 The kernels of the weak forms of the equations are as follows, with test function $\mu$:
 
-3.1) $$ \mu * \{-u \sqrt{1+ \gamma^2 * (\Psi_{R}^2 + \Psi_{I}^2) } * \left(\frac{\partial}{\partial t} \Psi_R-\varphi \Psi_I\right)\}  \\+ \nabla \mu * \{(- \nabla \Psi_R)\} \\+ \nabla \mu  * \{(\gamma^2  \Psi_{I}  \nabla \varphi)\} + \mu*\{\gamma^2  \nabla \Psi_{I}  \nabla \varphi\}\\+ \mu *\{(1 - \Psi_{R}^2 -\Psi_{I}^2) *\Psi_{R}\} = 0$$
 
-3.2) $$\mu * \{-u \sqrt{1+ \gamma^2 * (\Psi_{R}^2 + \Psi_{I}^2) } * \left(\frac{\partial}{\partial t} \psi_I+\varphi \psi_R\right)\}  \\+ \nabla \mu * \{- \nabla \Psi_I\} \\+ \nabla \mu  * \{- \gamma^2  \Psi_{R}  \nabla \varphi\} + \mu*\{-
-\gamma^2  \nabla \Psi_{R}  \nabla \varphi\}\\+ \mu *\{(1 - \Psi_{R}^2 -\Psi_{I}^2) *\Psi_{I}\} = 0$$
+3.1) $$0=\Biggl( \mu ,-u \sqrt{1+\gamma^2\left(\psi_R^2+\psi_I^2\right)}\left(\frac{\partial}{\partial t} \psi_R-\varphi \psi_I\right)\Biggl) \\ + \Biggl \lang \mu , \nabla \psi_R  \Biggl\rang  + \Biggl(\nabla \mu, - \nabla \psi_R \Biggl) \\- \Biggl\lang \mu,  \gamma^2 \psi_I \nabla \varphi \cdot \hat{n}  \Biggl\rang +\Biggl(\nabla \mu ,\gamma^2 \psi_I \nabla \varphi \Biggl)  + \Biggl(\mu, \gamma^2 \nabla \varphi\nabla\psi_I \Biggl) \\ +\Biggl( \mu, (1-\psi_R^2-\psi_I^2) \psi_R \Biggl)$$
 
-3.3) $$ \nabla \mu * \{- \nabla \varphi\} \\+ \nabla \mu * \{ \Psi_R \nabla \Psi_I\} + \mu*\{\nabla \Psi_R \nabla \Psi_I\}\\+ \nabla \mu * \{- \Psi_I \nabla \Psi_R\} + \mu*\{-\nabla \Psi_I \nabla \Psi_R\}= 0$$
 
-3.4) $$\mu \{\underline{j}+\nabla \varphi -\psi_R \nabla \psi_I+\psi_I \nabla \psi_R \} = 0$$
+3.2) $$0=\Biggl( \mu , -u \sqrt{1+\gamma^2\left(\psi_R^2+\psi_I^2\right)}\left(\frac{\partial}{\partial t} \psi_I+\varphi \psi_R\right)\Biggl) \\ + \Biggl \lang \mu , \nabla \psi_I  \Biggl\rang  + \Biggl(\nabla \mu, - \nabla \psi_I \Biggl) \\+ \Biggl\lang \mu,  \gamma^2 \psi_R \nabla \varphi \cdot \hat{n}  \Biggl\rang +\Biggl(\nabla \mu ,-\gamma^2 \psi_R \nabla \varphi \Biggl)  + \Biggl(\mu, -\gamma^2 \nabla \varphi\nabla\psi_R \Biggl) \\ +\Biggl( \mu, (1-\psi_R^2-\psi_I^2) \psi_I \Biggl)$$
+
+3.3) $$ 0 = \Biggl \lang \mu, \nabla \varphi \cdot \hat{n}\Biggl \rang + \Biggl( \nabla \mu, -\nabla \varphi \Biggl) \\+ \Biggl \lang \mu, - \psi_R \nabla \psi_I \cdot \hat{n}\Biggl \rang + \Biggl( \nabla \mu,\psi_R \nabla \psi_I \Biggl) + \Biggl(  \mu,\nabla \psi_I \cdot \nabla \psi_R \Biggl) \\+ \Biggl \lang \mu, \psi_I \nabla \psi_R \cdot \hat{n}\Biggl \rang + \Biggl( \nabla \mu,-\psi_I \nabla \psi_R \Biggl) + \Biggl(  \mu,-\nabla \psi_R \cdot \nabla \psi_I \Biggl)$$
+
+
+3.4) $$ 0 =  \Biggl( \mu,\underline{j}+\nabla \varphi-\psi_R \nabla \psi_I+\psi_I \nabla \psi_R\Biggl)$$
 
 
 
@@ -70,7 +72,7 @@ When writing the return of the kernels for each of these equations are as follow
 
 4.4) With $u = \underline{j}$: 
 
-N.B. This kernel is of type `ADVectorKernelValue`, and hence is automaticly multiplied by the test function: 
+N.B. This kernel is of type `ADVectorKernelValue`, and hence is automatically multiplied by the test function: 
 ```
 (((_u[_qp]) + (_grad_Phi[_qp]) - (_Psi_Re[_qp] * _grad_Psi_Im[_qp]) + (_Psi_Im[_qp] * _grad_Psi_Re[_qp])) )
 ```
@@ -136,7 +138,7 @@ eq66Im::computeQpResidual()
 $\Psi_R$ and $\Psi_I$ 
 
 - $\Psi$ should have constant magnitude but random phase.
-To do this when seperating into Real and Imaginary parts I have written a python script that randomly picks values of $\Psi_R$ and $\Psi_I$, and then normalises them so that $|\psi|^2 = \Psi_R^2 + \Psi_I^2 = 1$.
+To do this when separating into Real and Imaginary parts I have written a python script that randomly picks values of $\Psi_R$ and $\Psi_I$, and then normalises them so that $|\psi|^2 = \Psi_R^2 + \Psi_I^2 = 1$.
 These are then written to a `.csv` which is then loaded in as a function in MOOSE, and then $\Psi_Re$ and $\Psi_Im$ are assigned IC values from this function. Note that values are assigned nodally.  
 
 $\varphi$
@@ -150,22 +152,22 @@ $\underline{j}$
 
 Need to confirm what BCs are required.
 
-Currenlty all scalar fields, $\Psi_R$, $\Psi_I$, and $\varphi$ are periodic in the x-axis, by using the `Periodic` Actions system in MOOSE. In the y-axis they have a standard Neumann BC.
+Currently all scalar fields, $\Psi_R$, $\Psi_I$, and $\varphi$ are periodic in the x-axis, by using the `Periodic` Actions system in MOOSE. In the y-axis they have a standard Neumann BC.
 
 $\underline{j}$ I am still unsure about. Currently it is set to a `VectorFunctionDirichletBC`. Charge conservation needs to always be considered with $\underline{j}$.
 
 
 ***Model Outputs***
-The model needs to ouput phase, $\chi$, and the voltage, $V$.
+The model needs to output phase, $\chi$, and the voltage, $V$.
 
 $\chi$
 - $\chi$ is trivial to calculate, by creating an `AuxVariable` where $\chi = atan2(\Phi_I, \Phi_R)$. Note the $atan2$ function ranges from $(-\pi, \pi)$, rather than $(-\pi/2, \pi/2)$ as with the $atan$ function
 
 
 $V$
-- $V$ I still need to work out how to calculate, however it is likely to also encorperate use of the `AuxVariable` system as with $\chi$.
+- $V$ I still need to work out how to calculate, however it is likely to also incorporate use of the `AuxVariable` system as with $\chi$.
 
-***Inital Findings and Comments***
+***Initial Findings and Comments***
 
 I had an example, but realised I was missing some terms from the equations, due to making a mistake with the product rule.
 The model with the incomplete kernels actually solved (obviously the results are inherently incorrect), but when the kernels were corrected the solve fails to converge. Sod's Law!
@@ -174,9 +176,29 @@ Runtime
 - First indications are that runtime may be significantly higher than the previous python code. We will have to wait for the full model to confirm.
 
 $\varphi$
-- I dont fully understand what $\varphi$ actually is.
+- I do not fully understand what $\varphi$ actually is. It is the potential of the E-field?
 
 $\underline{j}$
-- The implenation of $\underline{j}$ I feel is currenlty incorrect, and I will have to review it further.
+- The implementation of $\underline{j}$ need to be checked.
 
 
+***Convergence Issues***
+
+I am pretty sure the calculations of the kernels are correct at this point, however the solve is not converging.
+Following `https://mooseframework.inl.gov/moose/application_usage/failed_solves.html` this is my plan:
+
+- Poor IC - If the IC is not near the solve on the first time step it may struggle to find the correct solution. I need to review what I want to set the $\varphi$ IC as. A fully disordered and random IC for $\Psi$ cannot be helping, but it is a condition of the solution so I will leave it in for the time being.
+
+- The Problem is very non-linear - Eeek!
+
+- By using Initialisation Diffusion we loose phase information, so that is not an option.
+
+- Consider waiting to turn on kernels - Seems dodgy.
+
+- It seems strange that it was working for the old kernels but not now. I will double check my maths, and the implementation in the `.C` files.
+
+
+***Found a mistake in a kernel!***
+
+I have found a lil mistake in a kernel, and the solve now converges for when $\gamma = 0$.
+When I test $\gamma = 1$ however it really struggles. Maybe look at small $\gamma$ first?

@@ -4,14 +4,17 @@
 # https://mooseframework.inl.gov/modules/heat_conduction/tutorials/introduction/therm_step03.html
 #
 
+csv_path = 'Psi_csv.csv'
+
+
 [Mesh]
     [generated]
       type = GeneratedMeshGenerator
       dim = 2
-      nx = 5
-      ny = 10
-      xmax = 5
-      ymax = 10
+      nx = 20
+      ny = 40
+      xmax = 10
+      ymax = 20
     []
   []
   
@@ -21,7 +24,7 @@
     [Psi_Im]
     []
     [Phi]
-      initial_condition = 0.2
+      initial_condition = 0
     []
     [j]
       family = LAGRANGE_VEC
@@ -30,16 +33,14 @@
 
   [ICs]
     [Psi_Re]
-      type = RandomIC
-      variable = Psi_Re
-      seed = 158
-      min = -1
+        type = FunctionIC
+        variable = Psi_Re
+        function = Psi_Re_Func
     []
     [Psi_Im]
-      type = RandomIC
-      variable = Psi_Im
-      seed = 13
-      min = -1
+        type = FunctionIC
+        variable = Psi_Im
+        function = Psi_Im_Func
     []
   []
   
@@ -78,6 +79,8 @@
 [AuxVariables]
   [Phase]
   []
+  [Psi_Mag]
+  []
 []
 
 [AuxKernels]
@@ -87,17 +90,47 @@
     coupled_variables = 'Psi_Im Psi_Re'
     expression = 'atan2(Psi_Im, Psi_Re)'
   []
+  [Psi_Mag_kern]
+    type = ParsedAux
+    variable = Psi_Mag
+    coupled_variables = 'Psi_Im Psi_Re'
+    expression = 'sqrt(Psi_Im*Psi_Im + Psi_Re*Psi_Re)'
+  []
+[]
+[UserObjects]
+    [reader_node]
+        type = PropertyReadFile
+        prop_file_name = ${csv_path}
+        read_type = 'node'
+        nprop = 2 # number of columns in CSV
+    []
+[]
+[Functions]
+      [Psi_Re_Func]
+        type = PiecewiseConstantFromCSV
+        read_prop_user_object = 'reader_node'
+        read_type = 'node'
+        column_number = '0'
+        # execute_on = INITIAL
+      []
+      [Psi_Im_Func]
+          type = PiecewiseConstantFromCSV
+          read_prop_user_object = 'reader_node'
+          read_type = 'node'
+          column_number = '1'
+        #   execute_on = INITIAL
+        []
 []
   [Materials]
     [ucon]
       type = ADGenericConstantMaterial
       prop_names = 'ucon'
-      prop_values = '5.78823864'
+      prop_values = '1'
     []
     [gamma]
       type = ADGenericConstantMaterial
       prop_names = 'gamma'
-      prop_values = '6'
+      prop_values = '0.1'
     []
   []
   
@@ -131,6 +164,7 @@
         auto_direction = 'x'
       []
     []
+
     # [j_left]
     #   type = VectorDirichletBC
     #   variable = j
@@ -140,29 +174,38 @@
     [j_left]
       type = VectorFunctionDirichletBC
       variable = j
-      function_x = 'if(t>10, (t-10)*0.1, 0)'
-      # function_x = '0.1'
+      function_x = 'if(t>10, (t-10)*0.01, 0)'
+      # function_x = '0'
       boundary = 'left right'
     []
   []
   
   [Executioner]
     type = Transient
-    end_time = 200
-    nl_max_its = 10
-    dt= 0.1
+    end_time = 2000
+    nl_max_its = 200
+    # l_max_its = 10
+    dt= 0.5
+    automatic_scaling = True 
     # [TimeStepper]
     #   type = IterationAdaptiveDT
     #   # optimal_iterations = 10
     #   # linear_iteration_ratio = 1
-    #   dt = 0.1
+    #   dt = 0.01
+    #   growth_factor= 1.2
+    # #   maxdt = 1
     # []
-    
-  
+    # # line_search = 'none'
+
+    petsc_options_iname = '-snes_linesearch_damping'
+    petsc_options_value = '0.5'
   []
 
+  [Debug]
+    show_var_residual_norms = true
+  []
   
   [Outputs]
     exodus = true
-    print_linear_residuals = True
+    print_linear_residuals = False
   []

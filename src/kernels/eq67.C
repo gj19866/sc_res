@@ -38,13 +38,13 @@ ADReal
 eq67::computeQpResidual()
 {
 
-    // double part1 = (_grad_test[_i][_qp] * (-_grad_u[_qp]))
-    
-    // double part2 = ((_grad_test[_i][_qp] * (_Psi_Re[_qp] * _grad_Psi_Im[_qp])) + (_test[_i][_qp] * (_grad_Psi_Re[_qp] * _grad_Psi_Im[_qp])))  
-    
-    // double part3 = ((_grad_test[_i][_qp] * ( - _Psi_Im[_qp] * _grad_u[_qp])) + (_test[_i][_qp] * ( - _grad_Psi_Im[_qp] * _grad_u[_qp])))
+  ADReal part1 = (_grad_test[_i][_qp] * (-_grad_u[_qp]));
+  
+  ADReal part2 = ((_grad_test[_i][_qp] * (_Psi_Re[_qp] * _grad_Psi_Im[_qp])));  
+  
+  ADReal part3 = ((_grad_test[_i][_qp] * ( - _Psi_Im[_qp] * _grad_Psi_Re[_qp])));
 
-return ((_grad_test[_i][_qp] * (-_grad_u[_qp])) + ((_grad_test[_i][_qp] * (_Psi_Re[_qp] * _grad_Psi_Im[_qp])) + (_test[_i][_qp] * (_grad_Psi_Re[_qp] * _grad_Psi_Im[_qp]))) + ((_grad_test[_i][_qp] * ( - _Psi_Im[_qp] * _grad_u[_qp])) + (_test[_i][_qp] * ( - _grad_Psi_Im[_qp] * _grad_u[_qp]))));
+  return part1 + part2 +part3;
     
   
 
