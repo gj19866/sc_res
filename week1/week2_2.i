@@ -11,10 +11,10 @@ csv_path = 'Psi_csv.csv'
     [generated]
       type = GeneratedMeshGenerator
       dim = 2
-      nx = 20
-      ny = 40
-      xmax = 10
-      ymax = 20
+      nx = 16
+      ny = 128
+      xmax = 8
+      ymax = 64
     []
   []
   
@@ -125,7 +125,7 @@ csv_path = 'Psi_csv.csv'
     [ucon]
       type = ADGenericConstantMaterial
       prop_names = 'ucon'
-      prop_values = '1'
+      prop_values = '5.78823864'
     []
     [gamma]
       type = ADGenericConstantMaterial
@@ -163,20 +163,37 @@ csv_path = 'Psi_csv.csv'
         variable = Phi
         auto_direction = 'x'
       []
+      # [j_periodic]
+      #   variable = j
+      #   auto_direction = 'x'
+      # []
     []
 
     # [j_left]
-    #   type = VectorDirichletBC
+    #   type = VectorFunctionDirichletBC
     #   variable = j
-    #   values = '1 0 0'
-    #   boundary = 'left right'
+    #   function_x = '0.15'
+    #   boundary = 'left'
     # []
-    [j_left]
+    # [j_right]
+    #   type = VectorFunctionDirichletBC
+    #   variable = j
+    #   function_x = '-0.15'
+    #   boundary = 'right'
+    # []
+    [j_top]
       type = VectorFunctionDirichletBC
       variable = j
-      function_x = 'if(t>10, (t-10)*0.01, 0)'
-      # function_x = '0'
-      boundary = 'left right'
+      # function_x = 'if(t>10, (t-10)*0.01, 0)'
+      # function_y = 'if(t>16, 250, if(t>14, 50, if(t>12, 10, if(t>10, 2.5, if(t>8, 2, if(t>6, 0.5, if(t>4, 1, if(t>2, 0.15, 0))))))))'
+      function_y = 'if(t>5, 0.6, 0)'
+      boundary = 'top'
+    []
+    [j_bottom]
+      type = VectorFunctionDirichletBC
+      variable = j
+      function_y = 'if(t>5, -0.6, 0)'
+      boundary = 'bottom'
     []
   []
   
@@ -185,7 +202,7 @@ csv_path = 'Psi_csv.csv'
     end_time = 2000
     nl_max_its = 200
     # l_max_its = 10
-    dt= 0.5
+    dt= 2
     automatic_scaling = True 
     # [TimeStepper]
     #   type = IterationAdaptiveDT

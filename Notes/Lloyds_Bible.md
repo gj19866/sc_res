@@ -39,7 +39,7 @@ The kernels of the weak forms of the equations are as follows, with test functio
 
 3.2) $$0=\Biggl( \mu , -u \sqrt{1+\gamma^2\left(\psi_R^2+\psi_I^2\right)}\left(\frac{\partial}{\partial t} \psi_I+\varphi \psi_R\right)\Biggl) \\ + \Biggl \lang \mu , \nabla \psi_I  \Biggl\rang  + \Biggl(\nabla \mu, - \nabla \psi_I \Biggl) \\+ \Biggl\lang \mu,  \gamma^2 \psi_R \nabla \varphi \cdot \hat{n}  \Biggl\rang +\Biggl(\nabla \mu ,-\gamma^2 \psi_R \nabla \varphi \Biggl)  + \Biggl(\mu, -\gamma^2 \nabla \varphi\nabla\psi_R \Biggl) \\ +\Biggl( \mu, (1-\psi_R^2-\psi_I^2) \psi_I \Biggl)$$
 
-3.3) $$ 0 = \Biggl \lang \mu, \nabla \varphi \cdot \hat{n}\Biggl \rang + \Biggl( \nabla \mu, -\nabla \varphi \Biggl) \\+ \Biggl \lang \mu, - \psi_R \nabla \psi_I \cdot \hat{n}\Biggl \rang + \Biggl( \nabla \mu,\psi_R \nabla \psi_I \Biggl) + \Biggl(  \mu,\nabla \psi_I \cdot \nabla \psi_R \Biggl) \\+ \Biggl \lang \mu, \psi_I \nabla \psi_R \cdot \hat{n}\Biggl \rang + \Biggl( \nabla \mu,-\psi_I \nabla \psi_R \Biggl) + \Biggl(  \mu,-\nabla \psi_R \cdot \nabla \psi_I \Biggl)$$
+3.3) $$ 0 = \Biggl \lang \mu, \nabla \varphi \cdot \hat{n}\Biggl \rang + \Biggl( \nabla \mu, -\nabla \varphi \Biggl) \\+ \Biggl \lang \mu, - \psi_R \nabla \psi_I \cdot \hat{n}\Biggl \rang + \Biggl( \nabla \mu,\psi_R \nabla \psi_I \Biggl) \\+ \Biggl \lang \mu, \psi_I \nabla \psi_R \cdot \hat{n}\Biggl \rang + \Biggl( \nabla \mu,-\psi_I \nabla \psi_R \Biggl) + \Biggl(  \mu,-\nabla \psi_R \cdot \nabla \psi_I \Biggl)$$
 
 
 3.4) $$ 0 =  \Biggl( \mu,\underline{j}+\nabla \varphi-\psi_R \nabla \psi_I+\psi_I \nabla \psi_R\Biggl)$$
