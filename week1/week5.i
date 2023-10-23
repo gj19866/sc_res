@@ -1,11 +1,11 @@
-
+# Diffusion
 #
 # Single block thermal input with time derivative term
 # https://mooseframework.inl.gov/modules/heat_conduction/tutorials/introduction/therm_step03.html
 #
 
 csv_path = 'Psi_csv.csv'
-# j_b = 0.1
+j_b = 0.02
 t_step = 50
 gamma = 0.1
 u = 5.78823864
@@ -39,6 +39,8 @@ u = 5.78823864
     [Phi]
       initial_condition = 0
     []
+    [Diffuse]
+    []
   []
 
   [ICs]
@@ -52,30 +54,47 @@ u = 5.78823864
         variable = Psi_Im
         function = Psi_Im_Func
     []
+    [Diffuse_IC]
+        type = RandomIC
+        variable = Diffuse
+        max = 1.2
+        min = 0.8
+    []
   []
   
   [Kernels]
     [eq66Re]
-      type = eq66Re
+      type = eq66Re_2
       variable = Psi_Im
       Psi_Re = Psi_Re
       Phi = Phi
       ucon = ucon
       gamma = gamma
+      Diffuse = Diffuse
     []
     [eq66Im]
-      type = eq66Im
+      type = eq66Im_2
       variable = Psi_Re
       Psi_Im = Psi_Im
       Phi = Phi
       ucon = ucon
       gamma = gamma
+      Diffuse = Diffuse
     []
     [eq67]
       type = eq67
       variable = Phi
       Psi_Im = Psi_Im
       Psi_Re = Psi_Re
+    []
+    [Diffuse_kernel]
+        type = FunctionDiffusion
+        variable = Diffuse
+        function = 'if(t<0.5, 5, 0)'
+    []
+    [Diffuse_timederive]
+        type = TimeDerivative
+        variable = Diffuse
     []
  []
   
@@ -128,14 +147,14 @@ u = 5.78823864
     [Phi_left]
         type = ParsedFunction
         # value= 'if(t<${t_step}, 0, (t-50)*${j_b}/50)'
-        # value= 'if(t<${t_step}, (50)*${j_b}/50, (0.01*t)*${j_b}/50)'
-        value = 'if(t<0.3*${t_step}, 0.3, if(t<0.301*${t_step}, 0.301, if(t<0.302*${t_step}, 0.302, if(t<0.303*${t_step}, 0.303, if(t<0.304*${t_step}, 0.304, if(t<0.305*${t_step}, 0.305, if(t<0.306*${t_step}, 0.306, if(t<0.307*${t_step}, 0.307, if(t<0.308*${t_step}, 0.308, if(t<0.309*${t_step}, 0.309, if(t<0.31*${t_step}, 0.31, if(t<0.311*${t_step}, 0.311, if(t<0.312*${t_step}, 0.312, if(t<0.313*${t_step}, 0.313, if(t<0.314*${t_step}, 0.314, if(t<0.315*${t_step}, 0.315, if(t<0.316*${t_step}, 0.316, if(t<0.317*${t_step}, 0.317, if(t<0.318*${t_step}, 0.318, if(t<0.319*${t_step}, 0.319, if(t<0.32*${t_step}, 0.32, if(t<0.321*${t_step}, 0.321, if(t<0.322*${t_step}, 0.322, if(t<0.323*${t_step}, 0.323, if(t<0.324*${t_step}, 0.324, if(t<0.325*${t_step}, 0.325, if(t<0.326*${t_step}, 0.326, if(t<0.327*${t_step}, 0.327, if(t<0.328*${t_step}, 0.328, if(t<0.329*${t_step}, 0.329, if(t<0.32999999999999996*${t_step}, 0.32999999999999996, if(t<0.33099999999999996*${t_step}, 0.33099999999999996, if(t<0.33199999999999996*${t_step}, 0.33199999999999996, if(t<0.33299999999999996*${t_step}, 0.33299999999999996, if(t<0.33399999999999996*${t_step}, 0.33399999999999996, if(t<0.33499999999999996*${t_step}, 0.33499999999999996, if(t<0.33599999999999997*${t_step}, 0.33599999999999997, if(t<0.33699999999999997*${t_step}, 0.33699999999999997, if(t<0.33799999999999997*${t_step}, 0.33799999999999997, if(t<0.33899999999999997*${t_step}, 0.33899999999999997, if(t<0.33999999999999997*${t_step}, 0.33999999999999997, if(t<0.34099999999999997*${t_step}, 0.34099999999999997, if(t<0.34199999999999997*${t_step}, 0.34199999999999997, if(t<0.34299999999999997*${t_step}, 0.34299999999999997, if(t<0.344*${t_step}, 0.344, if(t<0.345*${t_step}, 0.345, if(t<0.346*${t_step}, 0.346, if(t<0.347*${t_step}, 0.347, if(t<0.348*${t_step}, 0.348, if(t<0.349*${t_step}, 0.349, 0.35 ))))))))))))))))))))))))))))))))))))))))))))))))))'
+        # value= 'if(t<${t_step}, (50)*${j_b}/50, (t)*${j_b}/50)'
+        value = 'if(t<0*${t_step}, 0*${j_b},if(t<1*${t_step}, 1*${j_b},if(t<2*${t_step}, 2*${j_b},if(t<3*${t_step}, 3*${j_b},if(t<4*${t_step}, 4*${j_b},if(t<5*${t_step}, 5*${j_b},if(t<6*${t_step}, 6*${j_b},if(t<7*${t_step}, 7*${j_b},if(t<8*${t_step}, 8*${j_b},if(t<9*${t_step}, 9*${j_b},if(t<10*${t_step}, 10*${j_b},if(t<11*${t_step}, 11*${j_b},if(t<12*${t_step}, 12*${j_b},if(t<13*${t_step}, 13*${j_b},if(t<14*${t_step}, 14*${j_b},if(t<15*${t_step}, 15*${j_b},if(t<16*${t_step}, 16*${j_b},if(t<17*${t_step}, 17*${j_b},if(t<18*${t_step}, 18*${j_b},if(t<19*${t_step}, 19*${j_b},if(t<20*${t_step}, 20*${j_b},if(t<21*${t_step}, 21*${j_b},if(t<22*${t_step}, 22*${j_b},if(t<23*${t_step}, 23*${j_b},if(t<24*${t_step}, 24*${j_b},if(t<25*${t_step}, 25*${j_b},if(t<26*${t_step}, 26*${j_b},if(t<27*${t_step}, 27*${j_b},if(t<28*${t_step}, 28*${j_b},if(t<29*${t_step}, 29*${j_b},30*${j_b}))))))))))))))))))))))))))))))'
     []
     [Phi_right]
         type = ParsedFunction
         # value= 'if(t<${t_step}, 0, -(t-50)*${j_b}/50)'
-        #  value= 'if(t<${t_step}, (-50)*${j_b}/50, -(0.01*t)*${j_b}/50)'
-        value = 'if(t<0.3*${t_step}, -0.3, if(t<0.301*${t_step}, -0.301, if(t<0.302*${t_step}, -0.302, if(t<0.303*${t_step}, -0.303, if(t<0.304*${t_step}, -0.304, if(t<0.305*${t_step}, -0.305, if(t<0.306*${t_step}, -0.306, if(t<0.307*${t_step}, -0.307, if(t<0.308*${t_step}, -0.308, if(t<0.309*${t_step}, -0.309, if(t<0.31*${t_step}, -0.31, if(t<0.311*${t_step}, -0.311, if(t<0.312*${t_step}, -0.312, if(t<0.313*${t_step}, -0.313, if(t<0.314*${t_step}, -0.314, if(t<0.315*${t_step}, -0.315, if(t<0.316*${t_step}, -0.316, if(t<0.317*${t_step}, -0.317, if(t<0.318*${t_step}, -0.318, if(t<0.319*${t_step}, -0.319, if(t<0.32*${t_step}, -0.32, if(t<0.321*${t_step}, -0.321, if(t<0.322*${t_step}, -0.322, if(t<0.323*${t_step}, -0.323, if(t<0.324*${t_step}, -0.324, if(t<0.325*${t_step}, -0.325, if(t<0.326*${t_step}, -0.326, if(t<0.327*${t_step}, -0.327, if(t<0.328*${t_step}, -0.328, if(t<0.329*${t_step}, -0.329, if(t<0.32999999999999996*${t_step}, -0.32999999999999996, if(t<0.33099999999999996*${t_step}, -0.33099999999999996, if(t<0.33199999999999996*${t_step}, -0.33199999999999996, if(t<0.33299999999999996*${t_step}, -0.33299999999999996, if(t<0.33399999999999996*${t_step}, -0.33399999999999996, if(t<0.33499999999999996*${t_step}, -0.33499999999999996, if(t<0.33599999999999997*${t_step}, -0.33599999999999997, if(t<0.33699999999999997*${t_step}, -0.33699999999999997, if(t<0.33799999999999997*${t_step}, -0.33799999999999997, if(t<0.33899999999999997*${t_step}, -0.33899999999999997, if(t<0.33999999999999997*${t_step}, -0.33999999999999997, if(t<0.34099999999999997*${t_step}, -0.34099999999999997, if(t<0.34199999999999997*${t_step}, -0.34199999999999997, if(t<0.34299999999999997*${t_step}, -0.34299999999999997, if(t<0.344*${t_step}, -0.344, if(t<0.345*${t_step}, -0.345, if(t<0.346*${t_step}, -0.346, if(t<0.347*${t_step}, -0.347, if(t<0.348*${t_step}, -0.348, if(t<0.349*${t_step}, -0.349, 0.35 ))))))))))))))))))))))))))))))))))))))))))))))))))'
+        #  value= 'if(t<${t_step}, (-50)*${j_b}/50, -(t)*${j_b}/50)'
+        value = 'if(t<0*${t_step}, -0*${j_b},if(t<1*${t_step}, -1*${j_b},if(t<2*${t_step}, -2*${j_b},if(t<3*${t_step}, -3*${j_b},if(t<4*${t_step}, -4*${j_b},if(t<5*${t_step}, -5*${j_b},if(t<6*${t_step}, -6*${j_b},if(t<7*${t_step}, -7*${j_b},if(t<8*${t_step}, -8*${j_b},if(t<9*${t_step}, -9*${j_b},if(t<10*${t_step}, -10*${j_b},if(t<11*${t_step}, -11*${j_b},if(t<12*${t_step}, -12*${j_b},if(t<13*${t_step}, -13*${j_b},if(t<14*${t_step}, -14*${j_b},if(t<15*${t_step}, -15*${j_b},if(t<16*${t_step}, -16*${j_b},if(t<17*${t_step}, -17*${j_b},if(t<18*${t_step}, -18*${j_b},if(t<19*${t_step}, -19*${j_b},if(t<20*${t_step}, -20*${j_b},if(t<21*${t_step}, -21*${j_b},if(t<22*${t_step}, -22*${j_b},if(t<23*${t_step}, -23*${j_b},if(t<24*${t_step}, -24*${j_b},if(t<25*${t_step}, -25*${j_b},if(t<26*${t_step}, -26*${j_b},if(t<27*${t_step}, -27*${j_b},if(t<28*${t_step}, -28*${j_b},if(t<29*${t_step}, -29*${j_b},-30*${j_b}))))))))))))))))))))))))))))))'
     []
 []
 
@@ -203,17 +222,17 @@ u = 5.78823864
 [ave_Phi_right_top]
     type = PointValue
     variable = Phi
-    point = '57.0 60.0 0.0'
+    point = '37.0 10.0 0.0'
 []
 [ave_Phi_left_top]
     type = PointValue
     variable = Phi
-    point = '3.0 60.0 0.0'
+    point = '3.0 10.0 0.0'
 []
 [ave_Phi_right_bot]
     type = PointValue
     variable = Phi
-    point = '57.0 0.0 0.0'
+    point = '37.0 0.0 0.0'
 []
 [Voltage1]
     type = DifferencePostprocessor
@@ -230,7 +249,7 @@ u = 5.78823864
 [Current]
     type = FunctionValuePostprocessor
     function = Phi_left
-    scale_factor = 10
+    scale_factor = 34
     []
 [ave_Psi_Mag]
     type= AverageNodalVariableValue
@@ -240,7 +259,7 @@ u = 5.78823864
 
 [Executioner]
 type = Transient
-end_time = 2500
+end_time = 2000
 # end_time = 250
 nl_max_its = 50
 l_max_its = 50
@@ -249,7 +268,7 @@ l_max_its = 50
 nl_abs_tol = 1e-9
 [TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 0.5
+    dt = 0.4
     cutback_factor_at_failure = 0.1
     percent_change = 0.1
 
