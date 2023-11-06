@@ -17,7 +17,7 @@ eq66Re_2::validParams()
 {
   InputParameters params = ADKernel::validParams();
   params.addClassDescription(
-      "Kernel representing real component of eq66 of bible. Variable is Psi_Im.");
+      "Kernel representing real component of eq66 of bible. Variable is Psi_Im. Spatial variation in material properties.");
   params.addRequiredCoupledVar("Psi_Re","Real component of Psi");
   params.addRequiredCoupledVar("Phi",
                        "Phi");

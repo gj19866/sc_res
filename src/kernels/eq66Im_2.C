@@ -8,7 +8,7 @@ eq66Im_2::validParams()
 {
   InputParameters params = ADKernel::validParams();
   params.addClassDescription(
-      "Kernel representing Im component of eq66 of bible. Variable is Psi_Re.");
+      "Kernel representing Im component of eq66 of bible. Variable is Psi_Re. Spatial variation in material properties.");
   params.addCoupledVar("Psi_Im",
                        "Imaginary component of Psi");
   params.addCoupledVar("Phi",
