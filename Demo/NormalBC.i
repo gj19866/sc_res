@@ -215,7 +215,7 @@ u = 5.78823864
 [Current]
     type = FunctionValuePostprocessor
     function = Phi_left
-    scale_factor = 10
+    scale_factor = 1
     []
 [ave_Psi_Mag]
     type= AverageNodalVariableValue

@@ -5,7 +5,7 @@
 csv_path = 'Psi_csv.csv'
 j_b = 0.1
 smooth = 1
-t_step = 30
+t_step = 60
 gamma = 0.1
 u = 5.78823864
 
@@ -44,6 +44,12 @@ u = 5.78823864
         variable = Psi_Im
         function = Psi_Im_Func
     []
+    [Diffuse_IC]
+      type = RandomIC
+      variable = Diffuse
+      max = 1.2
+      min = 0.8
+  []
   []
   
   [Kernels]
@@ -230,7 +236,7 @@ u = 5.78823864
     [Current]
         type = FunctionValuePostprocessor
         function = Phi_left
-        scale_factor = 10
+        scale_factor = 1
         []
     [ave_Psi_Mag]
         type= AverageNodalVariableValue
