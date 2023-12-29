@@ -1,9 +1,16 @@
 // #include "SuperBC2.h"
 // #include <cmath>
+// #include "SuperBC2.h"
+// #include <cmath>
 
 
 // registerMooseObject("SCResApp", SuperBC2);
+// registerMooseObject("SCResApp", SuperBC2);
 
+// InputParameters
+// SuperBC2::validParams()
+// {
+//   InputParameters params = ADDirichletBCBase::validParams();
 // InputParameters
 // SuperBC2::validParams()
 // {
@@ -15,6 +22,13 @@
 //   return params;
 // }
 
+// SuperBC2::SuperBC2(const InputParameters & parameters)
+//   : ADDirichletBCBase(parameters),
+//     // store the user-specified parameters from the input file...
+//     _psi_MAG(getParam<Real>("psi_MAG")),        // for the multiplier
+//     _Psi_Im(adCoupledValue("Psi_Im")) // for the coupled variable
+// {
+// }
 // SuperBC2::SuperBC2(const InputParameters & parameters)
 //   : ADDirichletBCBase(parameters),
 //     // store the user-specified parameters from the input file...
