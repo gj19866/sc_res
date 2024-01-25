@@ -16,6 +16,19 @@ Welcome to a finite element approach to solving the Time-Dependent Ginzburg-Land
   - [Running Models - Local](#running-models---local)
   - [Running Models - HPC](#running-models---hpc)
 - [Input File](#input-file)
+  - [Meshes](#meshes)
+  - [Variables](#variables)
+  - [Kernels](#kernels)
+  - [AuxVariables](#auxvariables)
+  - [AuxKernels](#auxkernels)
+  - [Initial Conditions](#initial-conditions)
+  - [Boundary Conditions - Normal BCs](#boundary-conditions---normal-bcs)
+  - [Boundary Conditions - Superconducting BCs](#boundary-conditions---superconducting-bcs)
+  - [Functions](#functions)
+  - [Materials](#materials)
+  - [Post Processors](#post-processors)
+  - [Executioner](#executioner)
+  - [Outputs](#outputs)
 - [Demo Files](#demo-files)
 - [Exodus Processing](#exodus-processing)
 - [Contact Information](#contact-information)
@@ -282,7 +295,7 @@ $\psi_R$ and $\psi_I$
 
 This denotes the boundary conditions for the case where the plate is superconducting on the boundaries where current is not being added, and the plate is not superconducting on the boundaries where current is being added
 
-$\varphi$
+### $\varphi$
 - Non-current boundaries: 
 Boundaries are `ADNeumannBC`, such that $\nabla \cdot \varphi = 0$
 
@@ -290,7 +303,7 @@ Boundaries are `ADNeumannBC`, such that $\nabla \cdot \varphi = 0$
 Boundaries are `FunctionNeumannBC`, with $\nabla \cdot \varphi = j_b$ on the current adding boundary, and $\nabla \cdot \varphi = -j_b$ on the current removing boundary. Note that charge must be conserved here. By using `FunctionNeumannBC` allows the current passed through the sample to be a function of time.
 
 
-## $\psi_R$ and $\psi_I$
+### $\psi_R$ and $\psi_I$
 
 - On the non-current boundaries:
 Boundaries are `ADNeumannBC`, such that $\nabla \cdot \psi_{R/I} = 0$.
@@ -317,10 +330,10 @@ Phi_left and Phi_right
 
 ## Materials
 
-ucon
+### ucon
 - The value of $u$ from the TDGLE.
 
-$\gamma$
+### $\gamma$
 - The value of $\gamma$ from the TDGLE
 
 These were set as material properties so that they have the ability to be varied spatially. If it is decided that the ability to vary these values spatially, then these could be just set as variables instead, and this would remove the need to index over each quadrature point in the solve, thus increasing the speed of the solve slightly. 
