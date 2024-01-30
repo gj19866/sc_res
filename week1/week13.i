@@ -175,12 +175,24 @@ u = 5.78823864
     boundary = 'left'
     value = '0.91651513899' # (1-a^2)*cos(0)
     []
+    [Psi_Re_x_left_2]
+        type = ADNeumannBC
+        variable = Psi_Re
+        boundary = 'left'
+        value = '0'
+        []
     [Psi_Im_x_left]
     type = ADDirichletBC
     variable = Psi_Im
     boundary = 'left'
     value = 0 # (1-a^2)*sin(0)
     []
+    [Psi_Im_x_left_2]
+        type = ADNeumannBC
+        variable = Psi_Im
+        boundary = 'left'
+        value = '0.366606056'
+        []
 
     [Psi_Re_x_right]
     type = ADFunctionDirichletBC
@@ -188,12 +200,24 @@ u = 5.78823864
     boundary = 'right'
     function = 'Psi_Re_right'
     []
+    [Psi_Re_x_right_2]
+        type = ADNeumannBC
+        variable = Psi_Re
+        boundary = 'right'
+        value = '-0.362704724366'
+        []
     [Psi_Im_x_right]
     type = ADFunctionDirichletBC
     variable = Psi_Im
     boundary = 'right'
     function = 'Psi_Im_right'
     []
+    [Psi_Im_x_right_2]
+        type = ADNeumannBC
+        variable = Psi_Im
+        boundary = 'right'
+        value = '-0.0533411934837'
+        []
     [Phi]
         type = ADDirichletBC # Could this be Dirichelt/ neumann?
         variable= Phi

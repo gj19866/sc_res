@@ -89,6 +89,10 @@ u = 5.78823864
   []
   [Psi_Mag]
   []
+  [total_current]
+    family = MONOMIAL_VEC
+    order = constant
+    []
 []
 
 [AuxKernels]
@@ -104,6 +108,15 @@ u = 5.78823864
     coupled_variables = 'Psi_Im Psi_Re'
     expression = 'sqrt(Psi_Im*Psi_Im + Psi_Re*Psi_Re)'
   []
+  [total_current]
+    type = CurrentAux 
+    variable = total_current
+    Psi_Re = Psi_Re
+    Psi_Im = Psi_Im
+    Phi = Phi
+  []
+
+    
 []
 
 [UserObjects]
