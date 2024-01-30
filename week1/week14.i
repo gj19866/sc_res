@@ -8,7 +8,7 @@ csv_path = 'Psi_csv.csv'
 # j_b = 0.1
 # smooth = 1
 # t_step = 30
-gamma = 0.1
+gamma = 0.0
 u = 5.78823864
 
 
@@ -116,27 +116,35 @@ u = 5.78823864
 []
 
 [Functions]
-      [Psi_Re_Func]
-        type = PiecewiseConstantFromCSV
-        read_prop_user_object = 'reader_node'
-        read_type = 'node'
-        column_number = '0'
-        # execute_on = INITIAL
-    []
-    [Psi_Im_Func]
-        type = PiecewiseConstantFromCSV
-        read_prop_user_object = 'reader_node'
-        read_type = 'node'
-        column_number = '1'
-    #   execute_on = INITIAL
-    []
+    #   [Psi_Re_Func]
+    #     type = PiecewiseConstantFromCSV
+    #     read_prop_user_object = 'reader_node'
+    #     read_type = 'node'
+    #     column_number = '0'
+    #     # execute_on = INITIAL
+    # []
+    # [Psi_Im_Func]
+    #     type = PiecewiseConstantFromCSV
+    #     read_prop_user_object = 'reader_node'
+    #     read_type = 'node'
+    #     column_number = '1'
+    # #   execute_on = INITIAL
+    # []
     [Psi_Re_right]
         type= ParsedFunction
-        value = '0.91651513899*cos(0.4*20)' #(1-a^2)*cos(a*x)
+        value = 'sqrt(0.84)*cos(0.4*20)' #(1-a^2)*cos(a*x)
     []
     [Psi_Im_right]
         type= ParsedFunction
-        value = '0.91651513899*sin(0.4*20)' #(1-a^2)*sin(a*x)
+        value = 'sqrt(0.84)*sin(0.4*20)' #(1-a^2)*sin(a*x)
+    []
+    [Psi_Re_Func]
+        type= ParsedFunction
+        value = 'sqrt(0.84)*cos(0.4*x)' #(1-a^2)*cos(a*x)
+    []
+    [Psi_Im_Func]
+        type= ParsedFunction
+        value = 'sqrt(0.84)*sin(0.4*x)' #(1-a^2)*sin(a*x)
     []
 []
 
@@ -173,13 +181,13 @@ u = 5.78823864
     type = ADDirichletBC
     variable = Psi_Re
     boundary = 'left'
-    value = '0.91651513899' # (1-a^2)*cos(0)
+    value = 0.91651513899 # sqrt(1-a^2)*cos(0)
     []
     [Psi_Im_x_left]
     type = ADDirichletBC
     variable = Psi_Im
     boundary = 'left'
-    value = 0 # (1-a^2)*sin(0)
+    value = 0 # sqrt(1-a^2)*sin(0)
     []
 
     [Psi_Re_x_right]
@@ -201,6 +209,13 @@ u = 5.78823864
         boundary= 'left right'
     []
 []
+
+[Postprocessors]
+    [ave_Psi_Mag]
+        type= AverageNodalVariableValue
+        variable = Psi_Mag
+    []
+    []
 
 [Executioner]
 type = Transient
