@@ -2,7 +2,7 @@
 
 gamma = 0.1
 u = 5.78823864
-j_b = 0.01
+j_b = 0.0000
 
 [Mesh]
     [generated]
@@ -19,7 +19,7 @@ j_b = 0.01
     [Psi_Mag]
         initial_condition = 1
     []
-    [Phase]
+    [arcPhase]
     []
     [Phi]
       initial_condition = 0
@@ -30,17 +30,17 @@ j_b = 0.01
   []
 
   [ICs]
-    [Phase]
+    [arcPhase]
         type = FunctionIC
-        variable = Phase
-        function = Phase_Func
+        variable = arcPhase
+        function = arcPhase_Func
     []
   []
   
   [Kernels]
     [eq66Re_MagArg]
-      type = eq66Re_MagArg
-      variable = Phase
+      type = eq66Re_MagArg2
+      variable = arcPhase
       Psi_Mag = Psi_Mag
       Phi = Phi
       ucon = ucon
@@ -48,18 +48,18 @@ j_b = 0.01
       Diffuse = Diffuse
     []
     [eq66Im_MagArg]
-      type = eq66Im_MagArg
+      type = eq66Im_MagArg2
       variable = Psi_Mag
-      Phase = Phase
+      arcPhase = arcPhase
       Phi = Phi
       ucon = ucon
       gamma = gamma
       Diffuse = Diffuse
     []
     [eq67_MagArg]
-      type = eq67_MagArg
+      type = eq67_MagArg2
       variable = Phi
-      Phase = Phase
+      arcPhase = arcPhase
       Psi_Mag = Psi_Mag
     []
     [Diffuse_kernel]
@@ -76,20 +76,18 @@ j_b = 0.01
 
 
 [Functions]
-    [Phase_Func]
+    [arcPhase_Func]
         type = ParsedFunction
-        value = ${j_b}*x
-        # value = 0
+        # value = ${j_b}*x
+        value = 0
     []
-    [Phase_BC_value_left]
+    [arcPhase_BC_value_left]
       type = ParsedFunction
-      # value = '${j_b}'
-      value = 0
+      value = '${j_b}*t'
   []
-  [Phase_BC_value_right]
+  [arcPhase_BC_value_right]
     type = ParsedFunction
-    # value = '-${j_b}'
-    value = 0
+    value = '${j_b}*t'
 []
 []
 
@@ -107,54 +105,42 @@ j_b = 0.01
 []
 
 [BCs]
-    [Phase_x_left]
+    [arcPhase_x_left]
         type = ADFunctionNeumannBC
-        variable = Phase
+        variable = arcPhase
         boundary = 'left '
-        function = Phase_BC_value_left
+        function = arcPhase_BC_value_left
         []
-    [Phase_x_right]
+    [arcPhase_x_right]
         type = ADFunctionNeumannBC
-        variable = Phase
+        variable = arcPhase
         boundary = ' right'
-        function = Phase_BC_value_right
+        function = arcPhase_BC_value_right
         []
-        [Phase_y]
+        [arcPhase_y]
           type = ADNeumannBC
-          variable = Phase
+          variable = arcPhase
           boundary = 'top bottom'
       []
 [Psi_Mag_y]
     type = ADNeumannBC
     variable = Psi_Mag
-    boundary = 'top bottom left right'
+    boundary = 'top bottom'
 []
+[Psi_Mag_x]
+  type = ADDirichletBC
+  variable = Psi_Mag
+  boundary = 'left right'
+  value = 1
 
-# [Psi_Mag_x]
-#   type = ADDirichletBC
-#   variable = Psi_Mag
-#   boundary = 'left right'
-#   value = 1
-
-#  []
+ []
 
 [Phi]
     type = ADNeumannBC
     variable = Phi
-    boundary = 'top bottom'
+    boundary = 'top bottom left right'
 []
-[Phi_left]
-  type = ADNeumannBC
-  variable = Phi
-  boundary = 'left'
-  value = 0.0
-[]
-[Phi_right]
-  type = ADNeumannBC
-  variable = Phi
-  boundary = 'right'
-  value = -0.0
-[]
+
 []
 
 [Executioner]

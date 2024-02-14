@@ -2,7 +2,7 @@
 
 gamma = 0.1
 u = 5.78823864
-j_b = 0.01
+j_b = 0.001
 
 [Mesh]
     [generated]
@@ -39,18 +39,17 @@ j_b = 0.01
   
   [Kernels]
     [eq66Re_MagArg]
-      type = eq66Re_MagArg
-      variable = Phase
-      Psi_Mag = Psi_Mag
-      Phi = Phi
+      type = Time_eq66Re_MagArg
+      variable = Psi_Mag
+      Phase = Phase
       ucon = ucon
       gamma = gamma
       Diffuse = Diffuse
     []
     [eq66Im_MagArg]
-      type = eq66Im_MagArg
-      variable = Psi_Mag
-      Phase = Phase
+      type = Time_eq66Im_MagArg
+      variable = Phase
+      Psi_Mag = Psi_Mag 
       Phi = Phi
       ucon = ucon
       gamma = gamma
@@ -73,23 +72,48 @@ j_b = 0.01
     []
  []
 
+ [AuxVariables]
+  [total_current]
+    family = MONOMIAL_VEC
+    order = constant
+    []
+  []
 
+[AuxKernels]
+  [total_current]
+    type = CurrentAux_MagArg
+    variable = total_current
+    Psi_Mag = Psi_Mag
+    Phase =Phase
+    Phi = Phi
+  []  
+[]
 
 [Functions]
     [Phase_Func]
         type = ParsedFunction
-        value = ${j_b}*x
-        # value = 0
+        # value = ${j_b}*x
+        value = 0
     []
     [Phase_BC_value_left]
       type = ParsedFunction
-      # value = '${j_b}'
+      # value = '${j_b}*t'
       value = 0
   []
   [Phase_BC_value_right]
     type = ParsedFunction
-    # value = '-${j_b}'
+    # value = '-${j_b}*t'
     value = 0
+[]
+[Phi_BC_value_left]
+  type = ParsedFunction
+  value = '${j_b}*t'
+  # value = 0
+[]
+[Phi_BC_value_right]
+  type = ParsedFunction
+  value = '-${j_b}*t'
+  # value = 0
 []
 []
 
@@ -107,18 +131,31 @@ j_b = 0.01
 []
 
 [BCs]
-    [Phase_x_left]
+    [Phi_x_left]
         type = ADFunctionNeumannBC
-        variable = Phase
+        variable = Phi
         boundary = 'left '
-        function = Phase_BC_value_left
+        function = Phi_BC_value_left
         []
-    [Phase_x_right]
+    [Phi_x_right]
         type = ADFunctionNeumannBC
-        variable = Phase
+        variable = Phi
         boundary = ' right'
-        function = Phase_BC_value_right
+        function = Phi_BC_value_right
         []
+
+        [Phase_x_left]
+          type = ADFunctionNeumannBC
+          variable = Phase
+          boundary = 'left '
+          function = Phase_BC_value_left
+          []
+      [Phase_x_right]
+          type = ADFunctionNeumannBC
+          variable = Phase
+          boundary = ' right'
+          function = Phase_BC_value_right
+          []      
         [Phase_y]
           type = ADNeumannBC
           variable = Phase
@@ -127,34 +164,33 @@ j_b = 0.01
 [Psi_Mag_y]
     type = ADNeumannBC
     variable = Psi_Mag
-    boundary = 'top bottom left right'
+    boundary = 'top bottom'
 []
 
-# [Psi_Mag_x]
-#   type = ADDirichletBC
-#   variable = Psi_Mag
-#   boundary = 'left right'
-#   value = 1
-
-#  []
+[Psi_Mag_x]
+  type = ADDirichletBC
+  variable = Psi_Mag
+  boundary = 'left right'
+  value = 1
+ []
 
 [Phi]
     type = ADNeumannBC
     variable = Phi
     boundary = 'top bottom'
 []
-[Phi_left]
-  type = ADNeumannBC
-  variable = Phi
-  boundary = 'left'
-  value = 0.0
-[]
-[Phi_right]
-  type = ADNeumannBC
-  variable = Phi
-  boundary = 'right'
-  value = -0.0
-[]
+# [Phi_left]
+#   type = ADDirichletBC
+#   variable = Phi
+#   boundary = 'left right'
+#   value = 0.0
+# []
+# [Phi_right]
+#   type = ADNeumannBC
+#   variable = Phi
+#   boundary = 'left right'
+#   value = 0.0
+# []
 []
 
 [Executioner]
@@ -177,12 +213,12 @@ petsc_options_iname = '-snes_linesearch_damping'
 petsc_options_value = '0.5'
 []
 
-[Debug]
-show_var_residual_norms = true
-[]
+# [Debug]
+# show_var_residual_norms = true
+# []
 
 [Outputs]
 exodus = true
-print_linear_residuals = True
+print_linear_residuals = False
 print_nonlinear_residuals = True
 []
