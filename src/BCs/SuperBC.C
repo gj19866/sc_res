@@ -8,7 +8,7 @@ SuperBC::validParams()
   InputParameters params = ADNodalBC::validParams();
 
   // Specify input parameters that we want users to be able to set:
-  params.addParam<Real>("psi_MAG", 0, "Mag of Psi on the boundary");
+  params.addParam<Real>("psi_MAG", 1, "Mag of Psi on the boundary");
   params.addRequiredCoupledVar("Psi_Im", "Value on the boundary");
   return params;
 }
