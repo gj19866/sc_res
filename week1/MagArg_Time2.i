@@ -70,7 +70,7 @@ j_b = 0.001
     [Diffuse_kernel]
         type = FunctionDiffusion
         variable = Diffuse
-        function = 'if(t<0.6, 5, 0)'
+        function = 'if(t<2.1, 1, 0)'
     []
     [Diffuse_timederive]
         type = TimeDerivative
@@ -113,12 +113,12 @@ j_b = 0.001
 []
 [Phi_BC_value_left]
   type = ParsedFunction
-  value = '${j_b}*t'
+  value = '${j_b}*t + 0.3'
   # value = 0
 []
 [Phi_BC_value_right]
   type = ParsedFunction
-  value = '-${j_b}*t'
+  value = '-${j_b}*t - 0.3'
   # value = 0
 []
 []
