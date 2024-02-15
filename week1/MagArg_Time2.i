@@ -25,6 +25,7 @@ j_b = 0.001
       initial_condition = 0
     []
     [Diffuse]
+      # initial_condition = 1
       []
   []
 
