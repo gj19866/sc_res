@@ -10,10 +10,10 @@ dataset = nc.Dataset(exodus_file_path)
 
 
 
-nodal_var_names = [name.tobytes().decode('ascii').strip() for name in dataset.variables['name_nod_var']]
+element_var_names = [name.tobytes().decode('ascii').strip() for name in dataset.variables['name_elem_var']]
 
-print("Nodal variable names found:")
-for var_name in nodal_var_names:
+print("Element variable names found:")
+for var_name in element_var_names:
     print(var_name)
 
 # print(nodal_var_names[])
@@ -22,8 +22,8 @@ for var_name in nodal_var_names:
 time_steps = dataset.variables['time_whole'][:]
 
 # Define the target points
-point2 = (92, 50)
-point1 = (308, 50)
+point2 = (92, 50) #Point on one side of sample
+point1 = (308, 50) #Point on the other side of sample
 
 # Extract node coordinates
 x_coords = dataset.variables['coordx'][:]
@@ -38,18 +38,58 @@ def find_closest_node(x_target, y_target):
 closest_node_index_1 = find_closest_node(*point1)
 closest_node_index_2 = find_closest_node(*point2)
 
+
+
+# Finding the node index is a pain in te ass here
+closest_element_index_1 = 24822
+
 # Extract 'Psi_Im' values for the closest nodes across all time steps
 psi_im_values_1 = dataset.variables['vals_nod_var3'][:, closest_node_index_1]
 psi_im_values_2 = dataset.variables['vals_nod_var3'][:, closest_node_index_2]
 
+j_x_values = dataset.variables['vals_elem_var1eb1'][:, closest_element_index_1]
+j_y_values = dataset.variables['vals_elem_var2eb1'][:, closest_element_index_1]
+
+
+
+# total_j = [np.sqrt(j_x_values[i]**2 + j_y_values[i]**2) for i in range(len(j_x_values))]
+total_j = np.sqrt(j_x_values**2 + j_y_values**2) 
+
+
+
 # Compute the difference in 'Psi_Im' values between the two points over time
 psi_im_difference = psi_im_values_1 - psi_im_values_2
 
+breaker = -1
+for i in range(len(j_y_values)):
+    if total_j[i+1] == 0:
+        breaker = i
+        break
+
+
+
+
 # Plotting the difference in 'Psi_Im' values over time
 plt.figure(figsize=(10, 6))
-plt.plot(time_steps, psi_im_difference ) #, marker='o', linestyle='-')
+plt.plot(time_steps[:breaker], psi_im_difference[:breaker] ) #, marker='o', linestyle='-')
 plt.title('Potential across the sample against time')
 plt.xlabel('Time')
 plt.ylabel('Potential Difference')
+plt.grid(True)
+plt.show()
+
+plt.figure(figsize=(10, 6))
+plt.plot(time_steps[:breaker], total_j[:breaker] ) #, marker='o', linestyle='-')
+plt.title('Current across the sample against time')
+plt.xlabel('Time')
+plt.ylabel('Current Density')
+plt.grid(True)
+plt.show()
+
+plt.figure(figsize=(10, 6))
+plt.plot(total_j[:breaker], psi_im_difference[:breaker] ) #, marker='o', linestyle='-')
+plt.title('V-I Graph')
+plt.xlabel('Current Density')
+plt.ylabel('Voltage')
 plt.grid(True)
 plt.show()
