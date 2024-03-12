@@ -23,6 +23,8 @@ for var_name in nodal_var_names:
 # Extract time steps
 time_steps = dataset.variables['time_whole'][:]
 
+current_steps = 0.001*time_steps
+
 # Define the target points
 point2 = (2, 5)
 point1 = (38, 5)
@@ -49,9 +51,9 @@ psi_im_difference = psi_im_values_1 - psi_im_values_2
 
 # Plotting the difference in 'Psi_Im' values over time
 plt.figure(figsize=(10, 6))
-plt.plot(time_steps[skip:], psi_im_difference[skip:] ) #, marker='o', linestyle='-')
-plt.title('Potential across the sample against time')
-plt.xlabel('Time')
+plt.plot(current_steps[skip:], psi_im_difference[skip:] ) #, marker='o', linestyle='-')
+plt.title('Potential across the sample against Current Density')
+plt.xlabel('Current Density')
 plt.ylabel('Potential Difference')
 plt.grid(True)
 plt.show()

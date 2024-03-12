@@ -3,9 +3,9 @@
 # Make sure the diffusion stop after the first time step!
 
 csv_path = 'Psi_csv.csv'
-j_b = 0.1
-smooth = 1
-t_step = 60
+# j_b = 0.1
+# smooth = 1
+# t_step = 60
 gamma = 0.1
 u = 5.78823864
 
@@ -14,9 +14,9 @@ u = 5.78823864
     [generated]
       type = GeneratedMeshGenerator
       dim = 2
-      nx = 20
+      nx = 40
       ny = 10
-      xmax = 20
+      xmax = 40
       ymax = 10
     []
   []
@@ -47,8 +47,8 @@ u = 5.78823864
     [Diffuse_IC]
       type = RandomIC
       variable = Diffuse
-      max = 1.2
-      min = 0.8
+      max = 2
+      min = 0
   []
   []
   
@@ -136,11 +136,13 @@ u = 5.78823864
     []
     [Phi_left]
         type = ParsedFunction
-        value = 'if(t<${t_step}*3/2, (${j_b}/(1+exp(-${smooth}*(t-${t_step})))), if(t<${t_step}*( 2+(1/2)), (${j_b}/(1+exp(-${smooth}*(t- 2* ${t_step}))))+(2-1) * ${j_b}, if(t<${t_step}*( 3+(1/2)), (${j_b}/(1+exp(-${smooth}*(t- 3* ${t_step}))))+(3-1) * ${j_b}, if(t<${t_step}*( 4+(1/2)), (${j_b}/(1+exp(-${smooth}*(t- 4* ${t_step}))))+(4-1) * ${j_b}, (${j_b}/(1+exp(-${smooth}*(t- 5* ${t_step}))))+(5-1) * ${j_b} ))))'
+        # value = 'if(t<${t_step}*3/2, (${j_b}/(1+exp(-${smooth}*(t-${t_step})))), if(t<${t_step}*( 2+(1/2)), (${j_b}/(1+exp(-${smooth}*(t- 2* ${t_step}))))+(2-1) * ${j_b}, if(t<${t_step}*( 3+(1/2)), (${j_b}/(1+exp(-${smooth}*(t- 3* ${t_step}))))+(3-1) * ${j_b}, if(t<${t_step}*( 4+(1/2)), (${j_b}/(1+exp(-${smooth}*(t- 4* ${t_step}))))+(4-1) * ${j_b}, (${j_b}/(1+exp(-${smooth}*(t- 5* ${t_step}))))+(5-1) * ${j_b} ))))'
+          value = '0.001*t'
       []
     [Phi_right]
         type = ParsedFunction
-        value = 'if(t<${t_step}*3/2, -(${j_b}/(1+exp(-${smooth}*(t-${t_step})))), if(t<${t_step}*( 2+(1/2)), -(${j_b}/(1+exp(-${smooth}*(t- 2* ${t_step}))))-(2-1) * ${j_b}, if(t<${t_step}*( 3+(1/2)), -(${j_b}/(1+exp(-${smooth}*(t- 3* ${t_step}))))-(3-1) * ${j_b}, if(t<${t_step}*( 4+(1/2)), -(${j_b}/(1+exp(-${smooth}*(t- 4* ${t_step}))))-(4-1) * ${j_b}, -(${j_b}/(1+exp(-${smooth}*(t- 5* ${t_step}))))+(5-1) * ${j_b} ))))'
+        value = '-0.001*t'
+        # value = 'if(t<${t_step}*3/2, -(${j_b}/(1+exp(-${smooth}*(t-${t_step})))), if(t<${t_step}*( 2+(1/2)), -(${j_b}/(1+exp(-${smooth}*(t- 2* ${t_step}))))-(2-1) * ${j_b}, if(t<${t_step}*( 3+(1/2)), -(${j_b}/(1+exp(-${smooth}*(t- 3* ${t_step}))))-(3-1) * ${j_b}, if(t<${t_step}*( 4+(1/2)), -(${j_b}/(1+exp(-${smooth}*(t- 4* ${t_step}))))-(4-1) * ${j_b}, -(${j_b}/(1+exp(-${smooth}*(t- 5* ${t_step}))))+(5-1) * ${j_b} ))))'
       []
 []
 

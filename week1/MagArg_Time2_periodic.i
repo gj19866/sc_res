@@ -1,17 +1,17 @@
 # First test of Mag Arg form
 
-gamma = 2
+gamma = 0.1
 u = 5.78823864
-j_b = 0.001
+j_b = 0.35
 
 [Mesh]
     [generated]
       type = GeneratedMeshGenerator
       dim = 2
-      nx = 40
-      ny = 40
-      xmax = 40
-      ymax = 40
+      nx = 20
+      ny = 20
+      xmax = 20
+      ymax = 20
     []
   []
   
@@ -20,6 +20,7 @@ j_b = 0.001
         initial_condition = 1
     []
     [Phase]
+      initial_condition = 0
     []
     [Phi]
       initial_condition = 0
@@ -30,16 +31,20 @@ j_b = 0.001
   []
 
   [ICs]
-    [Phase]
-        type = FunctionIC
-        variable = Phase
-        function = Phase_Func
-    []
+    # [Phase]
+    #     # type = FunctionIC
+    #     # variable = Phase
+    #     # function = Phase_Func
+    #   #   type = RandomIC
+    #   # variable = Phase
+    #   # max = 3.14
+    #   # min = -3.14
+    # []
     [Diffuse_IC]
       type = RandomIC
       variable = Diffuse
-      max = 2.5
-      min = -0.5
+      max = 2
+      min = 0
   []
   []
   
@@ -96,11 +101,11 @@ j_b = 0.001
 []
 
 [Functions]
-    [Phase_Func]
-        type = ParsedFunction
-        # value = ${j_b}*x
-        value = 0
-    []
+    # [Phase_Func]
+    #     type = ParsedFunction
+    #     # value = ${j_b}*x
+    #     value = 0
+    # []
     [Phase_BC_value_left]
       type = ParsedFunction
       # value = '${j_b}*t'
@@ -113,12 +118,12 @@ j_b = 0.001
 []
 [Phi_BC_value_left]
   type = ParsedFunction
-  value = '${j_b}*t + 0.3'
+  value = '${j_b}'
   # value = 0
 []
 [Phi_BC_value_right]
   type = ParsedFunction
-  value = '-${j_b}*t - 0.3'
+  value = '-${j_b}'
   # value = 0
 []
 []

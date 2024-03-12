@@ -5,8 +5,8 @@ import numpy as np
 # Path to your Exodus file
 # exodus_file_path = "/home/lstein/projects/sc_res/Results_Exo/MagArg_Time5_out_SCS_1.e"
 # exodus_file_path = '/home/lstein/projects/sc_res/Results_Exo/MagArg_ratchet3_right.e'
-exodus_file_path = '/home/lstein/projects/sc_res/Results_Exo/MagArg_ratchet3_left.e'
-
+# exodus_file_path = '/home/lstein/projects/sc_res/Results_Exo/MagArg_ratchet3_left.e'
+exodus_file_path = '/home/lstein/projects/sc_res/Demo/NormalBC_out.e'
 
 # Open the Exodus file
 dataset = nc.Dataset(exodus_file_path)
@@ -28,8 +28,8 @@ time_steps = dataset.variables['time_whole'][:]
 # point2 = (92, 50) #Point on one side of sample
 # point1 = (308, 50) #Point on the other side of sample
 
-point1 = (2,10)
-point2 = (48,10)
+point1 = (2,5)
+point2 = (38,5)
 
 # Extract node coordinates
 x_coords = dataset.variables['coordx'][:]
