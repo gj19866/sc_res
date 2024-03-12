@@ -1,12 +1,12 @@
 #pragma once
 
-#include "ADNodalBC.h"
+#include "ADIntegratedBC.h"
 
 /// Implements a coupled Dirichlet BC where u = alpha * some_var on the boundary.
-class SuperBC : public ADNodalBC
+class SuperBCInt : public ADIntegratedBC
 {
 public:
-  SuperBC(const InputParameters & parameters);
+  SuperBCInt(const InputParameters & parameters);
 
   static InputParameters validParams();
 

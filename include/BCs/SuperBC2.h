@@ -11,7 +11,7 @@
 //   static InputParameters validParams();
 
 // protected:
-//   virtual ADReal computeQpValue() override;
+//   virtual ADReal computeQpResidual() override;
 
 // private:
 //   /// Multiplier on the boundary.
