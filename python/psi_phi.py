@@ -65,8 +65,8 @@ fig, ax1 = plt.subplots(figsize=(10, 6))
 
 # Plotting on the first y-axis (ax1)
 color1 = 'tab:blue'
-ax1.set_xlabel(r'Current Density ($j_b$)')
-ax1.set_ylabel('Potential Difference (V)')  # , color=color1)
+ax1.set_xlabel(r'Current Density in Bridge ($j_b$)')
+ax1.set_ylabel(r'Potential Difference Across Bridge ($\varphi$)')  # , color=color1)
 line1, = ax1.plot(current_steps[skip:], psi_im_difference[skip:], color=color1, label='Voltage')
 ax1.tick_params(axis='y')  # , labelcolor=color1)
 ax1.grid(True)

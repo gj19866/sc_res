@@ -19,10 +19,10 @@ j_b = 0.0001
       # file = 'notch.msh'
       # file = 'ratchet1.msh'
       # file = 'ratchet2.msh'
-      file = 'ratchet3.msh'
+      # file = 'ratchet3.msh'
       # file = 'scs.msh'
       # file = 'rect.msh'
-      # file = 'double_notch.msh'
+      file = 'double_notch.msh'
       # file = 'scs.msh'
   []
   []
@@ -37,7 +37,7 @@ j_b = 0.0001
       initial_condition = 0
     []
     [Diffuse]
-      initial_condition = 1
+      # initial_condition = 1
       []
   []
 
@@ -47,12 +47,12 @@ j_b = 0.0001
         variable = Phase
         function = Phase_Func
     []
-  #   [Diffuse_IC]
-  #     type = RandomIC
-  #     variable = Diffuse
-  #     max = 1.8
-  #     min = 0.2
-  # []
+    [Diffuse_IC]
+      type = RandomIC
+      variable = Diffuse
+      max = 1.8
+      min = 0.2
+  []
   []
   
   [Kernels]

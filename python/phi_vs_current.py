@@ -5,12 +5,14 @@ import numpy as np
 # Path to your Exodus file
 # exodus_file_path = "/home/lstein/projects/sc_res/Results_Exo/MagArg_Time5_out_SCS_1.e"
 # exodus_file_path = "/home/lstein/projects/sc_res/week1/MagArg_Time2_periodic_out.e"
-exodus_file_path = '/home/lstein/projects/sc_res/Demo/NormalBC_out.e'
+# exodus_file_path = '/home/lstein/projects/sc_res/Demo/NormalBC_VarryingProperties_out.e'
+# exodus_file_path = "/home/lstein/projects/sc_res/MagArg/MagArg_Time5_out.e"
+exodus_file_path = "/home/lstein/projects/sc_res/Results_Exo/MagArg_Time3_ratchet2_1.e"
 
 # Open the Exodus file
 dataset = nc.Dataset(exodus_file_path)
 
-skip = 5
+skip = 10
 
 nodal_var_names = [name.tobytes().decode('ascii').strip() for name in dataset.variables['name_nod_var']]
 
@@ -23,11 +25,11 @@ for var_name in nodal_var_names:
 # Extract time steps
 time_steps = dataset.variables['time_whole'][:]
 
-current_steps = 0.001*time_steps
+current_steps = 0.005*time_steps
 
 # Define the target points
-point2 = (2, 5)
-point1 = (38, 5)
+point2 = (92, 50)
+point1 = (308, 50)
 
 # Extract node coordinates
 x_coords = dataset.variables['coordx'][:]
@@ -43,17 +45,23 @@ closest_node_index_1 = find_closest_node(*point1)
 closest_node_index_2 = find_closest_node(*point2)
 
 # Extract 'Psi_Im' values for the closest nodes across all time steps
-psi_im_values_1 = dataset.variables['vals_nod_var2'][:, closest_node_index_1]
-psi_im_values_2 = dataset.variables['vals_nod_var2'][:, closest_node_index_2]
+psi_im_values_1 = dataset.variables['vals_nod_var3'][:, closest_node_index_1]
+psi_im_values_2 = dataset.variables['vals_nod_var3'][:, closest_node_index_2]
 
+print(dataset.variables['vals_nod_var3'])
+print(len(dataset.variables['vals_nod_var3']))
 # Compute the difference in 'Psi_Im' values between the two points over time
 psi_im_difference = psi_im_values_1 - psi_im_values_2
 
 # Plotting the difference in 'Psi_Im' values over time
 plt.figure(figsize=(10, 6))
-plt.plot(current_steps[skip:], psi_im_difference[skip:] ) #, marker='o', linestyle='-')
+plt.plot(current_steps[skip:], psi_im_difference[skip:], label='Positive applied current' )
+plt.plot(current_steps[skip:], psi_im_difference[skip:], label='Negative applied current' )
+
+# plt.plot(current_steps[skip:], psi_im_difference[skip:] ) #, marker='o', linestyle='-')
 plt.title('Potential across the sample against Current Density')
 plt.xlabel('Current Density')
 plt.ylabel('Potential Difference')
 plt.grid(True)
+plt.legend()
 plt.show()
