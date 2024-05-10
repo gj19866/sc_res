@@ -381,7 +381,13 @@ Extra Demo files for various, non-trivial meshes, and for SupercondutingBCs will
 
 # Exodus Processing
 
-Exodus files are being processed with seacas. This will be documented later.
+Exodus files are being processed with seacas.
+Install seacas from here: 
+```
+https://github.com/sandialabs/seacas
+```
+The instructions are quite unclear in their README, however tools such as ChatGPT are useful for helping with installation.
+
 
 # Contact Information
 
